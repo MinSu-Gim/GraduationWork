@@ -24,7 +24,7 @@ public class h2Database implements UserService {
     }
 
     @Override
-    public List<User> findUserByName(String queryName) {
+    public List<User> findUserByNickName(String queryName) {
         return em.createQuery("select m from User m where m.user_nickname = :queryName", User.class)
                 .setParameter("queryName", queryName)
                 .getResultList();
