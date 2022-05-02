@@ -53,4 +53,10 @@ public class h2Database implements UserService {
 
         return findUser.getId();
     }
+
+    @Override
+    public void increaseMoney(int totalMoney, Long userId) {
+        User userById = findUserById(userId);
+        userById.setMoney(userById.getMoney() + totalMoney);
+    }
 }

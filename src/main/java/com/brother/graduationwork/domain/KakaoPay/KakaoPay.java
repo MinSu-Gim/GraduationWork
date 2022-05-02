@@ -23,7 +23,7 @@ public class KakaoPay {
     private KakaoPayReadyVO kakaoPayReadyVO;
     private KakaoPayApprovalVO kakaoPayApprovalVO;
 
-    public String kakaoPayReady() {
+    public String kakaoPayReady(String money) {
 
         log.info("KakaoPay.kakaoPayReady");
 
@@ -40,10 +40,10 @@ public class KakaoPay {
         params.add("cid", "TC0ONETIME"); // cid must be 'TC0ONETIME' in test case
         params.add("partner_order_id", "1000");
         params.add("partner_user_id", "UserA");
-        params.add("item_name", "카페라떼 2잔 외 4건");
-        params.add("quantity", "6");
-        params.add("total_amount", "52000");
-        params.add("tax_free_amount", "500");
+        params.add("item_name", "여기모여 머니 충전");
+        params.add("quantity", "1");
+        params.add("total_amount", money);
+        params.add("tax_free_amount", "0");
         params.add("approval_url", "http://localhost:8080/kakaoPaySuccess");
         params.add("cancel_url", "http://localhost:8080/kakaoPayCancel");
         params.add("fail_url", "http://localhost:8080/kakaoPaySuccessFail");
@@ -52,9 +52,7 @@ public class KakaoPay {
 
         try {
             kakaoPayReadyVO = restTemplate.postForObject(new URI(HOST + "/v1/payment/ready"), body, KakaoPayReadyVO.class);
-
             log.info("" + kakaoPayReadyVO);
-
             return kakaoPayReadyVO.getNext_redirect_pc_url();
 
         } catch (RestClientException | URISyntaxException e) {
@@ -65,7 +63,7 @@ public class KakaoPay {
 
     }
 
-    public KakaoPayApprovalVO kakaoPayInfo(String pg_token) {
+    public KakaoPayApprovalVO kakaoPayInfo(String pg_token, String money) {
         log.info("KakaoPay.kakaoPayInfo");
 
         RestTemplate restTemplate = new RestTemplate();
@@ -78,15 +76,15 @@ public class KakaoPay {
         headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
 
         // 서버로 요청할 Body
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("cid", "TC0ONETIME");
         params.add("tid", kakaoPayReadyVO.getTid());
         params.add("partner_order_id", "1000");
         params.add("partner_user_id", "UserA");
         params.add("pg_token", pg_token);
-        params.add("total_amount", "52000");
+        params.add("total_amount", money);
 
-        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
 
         try {
             kakaoPayApprovalVO = restTemplate.postForObject(new URI(HOST + "/v1/payment/approve"), body, KakaoPayApprovalVO.class);

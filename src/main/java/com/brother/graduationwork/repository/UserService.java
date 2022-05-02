@@ -15,4 +15,6 @@ public interface UserService {
     List<User> findAllUser();
 
     Long updateUser(User updateUser);
+
+    void increaseMoney(int totalMoney, Long userId);
 }

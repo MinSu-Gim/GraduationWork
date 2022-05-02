@@ -28,11 +28,14 @@ public class User {
 
     private String user_phoneNumber;
 
+    private int money;
+
     public User(String user_email, String user_pw, String nickname, String phoneNumber) {
         this.user_email = user_email;
         this.user_pw = user_pw;
         this.user_nickname = nickname;
         this.user_phoneNumber = phoneNumber;
+        this.money = 0;
     }
 
     public User() {
