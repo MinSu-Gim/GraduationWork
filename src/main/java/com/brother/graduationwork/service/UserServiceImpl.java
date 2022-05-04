@@ -1,4 +1,4 @@
-package com.brother.graduationwork.repository;
+package com.brother.graduationwork.service;
 
 import com.brother.graduationwork.domain.User;
 import org.springframework.stereotype.Repository;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class h2Database implements UserService {
+public class UserServiceImpl implements UserService {
 
     @PersistenceContext
     EntityManager em;

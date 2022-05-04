@@ -1,7 +1,7 @@
 package com.brother.graduationwork.controller;
 
 import com.brother.graduationwork.domain.User;
-import com.brother.graduationwork.repository.UserService;
+import com.brother.graduationwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    private final UserService h2Database;
+    private final UserService userServiceImpl;
 
     /**
      * 서버에 올릴 때, 코드 제거하기
@@ -28,10 +28,10 @@ public class UserController {
         User userC = new User("cc@gmail.com", "pw3", "나재현", "01034567890");
         User userD = new User("dd@gmail.com", "pw4", "김민수", "01026747890");
 
-        h2Database.registerUser(userA);
-        h2Database.registerUser(userB);
-        h2Database.registerUser(userC);
-        h2Database.registerUser(userD);
+        userServiceImpl.registerUser(userA);
+        userServiceImpl.registerUser(userB);
+        userServiceImpl.registerUser(userC);
+        userServiceImpl.registerUser(userD);
     }
 
     /**
@@ -45,7 +45,7 @@ public class UserController {
 
         log.info("UserController.getUser");
 
-        User findUser = h2Database.findUserById(id);
+        User findUser = userServiceImpl.findUserById(id);
         return findUser;
     }
 
@@ -60,7 +60,7 @@ public class UserController {
 
         log.info("UserController.getUser");
 
-        List<User> users = h2Database.findUserByNickName(nickname);
+        List<User> users = userServiceImpl.findUserByNickName(nickname);
         return users;
     }
 
@@ -74,7 +74,7 @@ public class UserController {
 
         log.info("UserController.getUserAll");
 
-        List<User> users = h2Database.findAllUser();
+        List<User> users = userServiceImpl.findAllUser();
         return users;
     }
 
@@ -89,7 +89,7 @@ public class UserController {
 
         log.info("UserController.addUser");
 
-        Long userId = h2Database.registerUser(user);
+        Long userId = userServiceImpl.registerUser(user);
         return userId;
     }
 
@@ -104,7 +104,7 @@ public class UserController {
 
         log.info("UserController.test");
 
-        Long updateUserId = h2Database.updateUser(user);
+        Long updateUserId = userServiceImpl.updateUser(user);
         return updateUserId;
     }
 }

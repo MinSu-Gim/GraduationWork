@@ -1,4 +1,4 @@
-package com.brother.graduationwork.repository;
+package com.brother.graduationwork.service;
 
 import com.brother.graduationwork.domain.User;
 
