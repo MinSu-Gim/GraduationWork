@@ -1,5 +1,6 @@
 package com.brother.graduationwork.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,10 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private List<User> users = new ArrayList<>();
 
+    private String title;
+
+    private String gatheringPlace;
+
     private LocalDate createdDate;
 
     private String createdBy;
@@ -30,7 +35,7 @@ public class Room {
 
     private int currentAmount;
 
-    private int numOfPeople;
+    private int maximumPeople;
 
     private int currNumOfPeople;
 
@@ -39,12 +44,15 @@ public class Room {
         user.setRoom(this);
     }
 
-    public Room(String createdBy, int minimumOrderAmount, int numOfPeople) {
+    @Builder
+    public Room(String title, String gatheringPlace, String createdBy, int minimumOrderAmount, int numOfPeople) {
+        this.title = title;
+        this.gatheringPlace = gatheringPlace;
         this.createdDate = LocalDate.now();
         this.createdBy = createdBy;
         this.minimumOrderAmount = minimumOrderAmount;
         this.currentAmount = 0;
-        this.numOfPeople = numOfPeople;
-        this.currNumOfPeople = 0;
+        this.maximumPeople = numOfPeople;
+        this.currNumOfPeople = 1;
     }
 }

@@ -7,18 +7,17 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @RequiredArgsConstructor
-@Setter @Getter
+@Setter
+@Getter
 public class RoomDTO {
 
-    private final LocalDate createdDate;
+    private final String title;
 
     private final String createdBy;
 
+    private final String gatheringPlace;
+
     private final int minimumOrderAmount;
 
-    private final int currentAmount;
-
     private final int numOfPeople;
-
-    private final int currNumOfPeople;
 }

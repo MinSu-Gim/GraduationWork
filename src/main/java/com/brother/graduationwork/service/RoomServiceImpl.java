@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Slf4j
 @Repository
@@ -21,10 +22,27 @@ public class RoomServiceImpl implements RoomService {
     @PersistenceContext
     EntityManager em;
 
-    private final UserService userServiceImpl;
+    @Override
+    public Room createRoom(RoomDTO roomDTO) {
+        Room room = Room.builder()
+                .title(roomDTO.getTitle())
+                .gatheringPlace(roomDTO.getGatheringPlace())
+                .createdBy(roomDTO.getCreatedBy())
+                .minimumOrderAmount(roomDTO.getMinimumOrderAmount())
+                .numOfPeople(roomDTO.getNumOfPeople())
+                .build();
+
+        em.persist(room);
+
+        return room;
+    }
 
     @Override
-    public void createRoom(String userNickname, RoomDTO roomDTO) {
+    public List<Room> findAllRooms(int offset, int limit) {
+        return em.createQuery("select r from Room r", Room.class)
+                .getResultList();
+//                .setFirstResult(offset)
+//                .setMaxResults(limit)
 
     }
 }
