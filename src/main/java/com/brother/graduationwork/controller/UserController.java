@@ -3,10 +3,13 @@ package com.brother.graduationwork.controller;
 import com.brother.graduationwork.domain.DuplicatedStatus;
 import com.brother.graduationwork.domain.LoginStatus;
 import com.brother.graduationwork.domain.User;
+
 import com.brother.graduationwork.dto.UserLoginDTO;
 import com.brother.graduationwork.dto.UserLoginReturnDTO;
 import com.brother.graduationwork.dto.UserOneParamDTO;
 import com.brother.graduationwork.dto.UserSuccessDTO;
+
+import com.brother.graduationwork.dto.UserDTO;
 import com.brother.graduationwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -110,17 +113,21 @@ public class UserController {
     }
 
     /**
-     * User 회원 가입
+     * User 회원가입
      *
-     * @param user
-     * @return user.id
+     * @param userDTO
+     * @return
      */
     @PostMapping("/user")
-    public Long addUser(@RequestBody User user) {
+    public Long addUser(@RequestBody UserDTO userDTO) {
 
         log.info("UserController.addUser");
+        log.info(String.valueOf(userDTO));
+        User newUser = new User(
+                userDTO.getUser_email(), userDTO.getUser_pw(), userDTO.getUser_nickname(), userDTO.getUser_phoneNumber()
+        );
 
-        Long userId = userServiceImpl.registerUser(user);
+        Long userId = userServiceImpl.registerUser(newUser);
         return userId;
     }
 
