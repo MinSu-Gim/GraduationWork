@@ -2,14 +2,13 @@ package com.brother.graduationwork.controller;
 
 
 import com.brother.graduationwork.domain.KakaoPay.KakaoPay;
+import com.brother.graduationwork.dto.KakaoPayDTO;
 import com.brother.graduationwork.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.Setter;
 
@@ -32,24 +31,33 @@ public class KakaoPayController {
     }
 
     @PostMapping("/kakaoPay")
-    public String kakaoPay(@RequestParam("money") String money, @RequestParam("id") Long id) {
-        System.out.println("id = " + id);
-        System.out.println("money = " + money);
-        totalMoney = money;
-        userId = id;
+    @ResponseBody
+    public String kakaoPay(@RequestBody KakaoPayDTO testDTO) {
+
+//        System.out.println("id = " + id);
+//        System.out.println("money = " + money);
+        totalMoney = testDTO.getMoney();
+        userId = testDTO.getId();
+        System.out.println("totalMoney: " + totalMoney);
+        System.out.println(userId);
         log.info("kakaopay post");
 
-        return "redirect:" + kakaopay.kakaoPayReady(totalMoney);
+        String nextURL = kakaopay.kakaoPayReady(totalMoney);
+        log.info("nextURL is " + nextURL);
+        return nextURL;
     }
 
-    @GetMapping("/kakaoPaySuccess")
-    public String kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model) {
-        System.out.println("KakaoPayController.kakaoPaySuccess");
+    @PostMapping("/kakaoPaySuccess")
+    @ResponseBody
+    public String kakaoPaySuccess(@RequestBody String pg_token, Model model) {
+        pg_token = pg_token.replace("=", "");
+        log.info("KakaoPayController.kakaoPaySuccess");
         log.info("kakaoPaySuccess get");
         log.info("kakaoPaySuccess pg_token : " + pg_token);
-        model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token, totalMoney));
-
+        // model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token, totalMoney));
+        int money = kakaopay.kakaoPayInfo(pg_token, totalMoney).getAmount().getTotal();
         userService.increaseMoney(Integer.parseInt(totalMoney), userId);
-        return "KakaoPaySuccess";
+        return money + "원이 충전되었습니다.";
+        // return "KakaoPaySuccess";
     }
 }

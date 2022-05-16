@@ -7,14 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-
-@Service
+@Controller
+//@Service
 @Slf4j
 public class KakaoPay {
 
@@ -23,6 +26,7 @@ public class KakaoPay {
     private KakaoPayReadyVO kakaoPayReadyVO;
     private KakaoPayApprovalVO kakaoPayApprovalVO;
 
+    @ResponseBody
     public String kakaoPayReady(String money) {
 
         log.info("KakaoPay.kakaoPayReady");
@@ -44,23 +48,23 @@ public class KakaoPay {
         params.add("quantity", "1");
         params.add("total_amount", money);
         params.add("tax_free_amount", "0");
-        params.add("approval_url", "http://localhost:8080/kakaoPaySuccess");
-        params.add("cancel_url", "http://localhost:8080/kakaoPayCancel");
-        params.add("fail_url", "http://localhost:8080/kakaoPaySuccessFail");
+        params.add("approval_url", "http://localhost:8080/");
+        params.add("cancel_url", "http://localhost:8080/");
+        params.add("fail_url", "http://localhost:8080/");
 
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 
         try {
             kakaoPayReadyVO = restTemplate.postForObject(new URI(HOST + "/v1/payment/ready"), body, KakaoPayReadyVO.class);
             log.info("" + kakaoPayReadyVO);
+            log.info("다음 URL " + kakaoPayReadyVO.getNext_redirect_pc_url());
             return kakaoPayReadyVO.getNext_redirect_pc_url();
 
         } catch (RestClientException | URISyntaxException e) {
             e.printStackTrace();
         }
-
-        return "/pay";
-
+        log.info("실패");
+        return "실패";
     }
 
     public KakaoPayApprovalVO kakaoPayInfo(String pg_token, String money) {
