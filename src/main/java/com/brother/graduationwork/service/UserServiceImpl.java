@@ -1,19 +1,46 @@
 package com.brother.graduationwork.service;
 
+import com.brother.graduationwork.domain.LoginStatus;
 import com.brother.graduationwork.domain.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 @Transactional
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     @PersistenceContext
     EntityManager em;
+
+    @Override
+    public LoginStatus loginUser(String email, String pw) {
+
+        LoginStatus loginStatus;
+
+        try {
+            User findUser = em.createQuery("select m from User m where m.user_email = :email", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+
+            if (pw.equals(findUser.getUser_pw())){
+                loginStatus = LoginStatus.Success;
+            } else {
+                loginStatus = LoginStatus.WrongPassword;
+            }
+
+        } catch (NoResultException e) {
+            loginStatus = LoginStatus.InvalidEmail;
+        }
+
+        return loginStatus;
+    }
 
     @Override
     public Long registerUser(User user) {

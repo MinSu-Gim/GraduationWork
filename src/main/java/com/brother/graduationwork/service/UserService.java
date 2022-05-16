@@ -1,5 +1,6 @@
 package com.brother.graduationwork.service;
 
+import com.brother.graduationwork.domain.LoginStatus;
 import com.brother.graduationwork.domain.User;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface UserService {
     Long updateUser(User updateUser);
 
     void increaseMoney(int totalMoney, Long userId);
+
+    LoginStatus loginUser(String email, String pw);
 }

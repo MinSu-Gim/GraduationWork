@@ -1,6 +1,8 @@
 package com.brother.graduationwork.controller;
 
+import com.brother.graduationwork.domain.LoginStatus;
 import com.brother.graduationwork.domain.User;
+import com.brother.graduationwork.dto.UserLoginDTO;
 import com.brother.graduationwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,16 @@ public class UserController {
         userServiceImpl.registerUser(userB);
         userServiceImpl.registerUser(userC);
         userServiceImpl.registerUser(userD);
+    }
+
+    @PostMapping("/login")
+    public LoginStatus Login(@RequestBody UserLoginDTO userLoginDTO) {
+
+        String email = userLoginDTO.getUser_email();
+        String pw = userLoginDTO.getUser_pw();
+
+        LoginStatus loginStatus = userServiceImpl.loginUser(email, pw);
+        return loginStatus;
     }
 
     /**
