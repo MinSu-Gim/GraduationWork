@@ -38,11 +38,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> findAllRooms(int offset, int limit) {
+    public List<Room> findAllRooms(int limit) {
         return em.createQuery("select r from Room r", Room.class)
+                .setFirstResult(0)
+                .setMaxResults(limit)
                 .getResultList();
-//                .setFirstResult(offset)
-//                .setMaxResults(limit)
-
     }
 }

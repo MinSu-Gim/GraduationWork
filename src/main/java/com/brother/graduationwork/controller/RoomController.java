@@ -27,12 +27,35 @@ public class RoomController {
         RoomDTO roomC = new RoomDTO("족막", "만나서", "그 사이",34000, 4);
         RoomDTO roomD = new RoomDTO("니드 카페인", "반가웡", "3초",40000, 5);
         RoomDTO roomE = new RoomDTO("오오", "만반잘부", "그 짧은 시간~",50000, 6);
+        RoomDTO roomF = new RoomDTO("마지막쓰", "만반잘부", "그 짧은 시간~",50000, 6);
 
         roomServiceImpl.createRoom(roomA);
         roomServiceImpl.createRoom(roomB);
         roomServiceImpl.createRoom(roomC);
         roomServiceImpl.createRoom(roomD);
         roomServiceImpl.createRoom(roomE);
+
+        roomServiceImpl.createRoom(roomA);
+        roomServiceImpl.createRoom(roomB);
+        roomServiceImpl.createRoom(roomC);
+        roomServiceImpl.createRoom(roomD);
+        roomServiceImpl.createRoom(roomE);
+
+        roomServiceImpl.createRoom(roomA);
+        roomServiceImpl.createRoom(roomB);
+        roomServiceImpl.createRoom(roomC);
+        roomServiceImpl.createRoom(roomD);
+        roomServiceImpl.createRoom(roomE);
+
+        roomServiceImpl.createRoom(roomA);
+        roomServiceImpl.createRoom(roomB);
+        roomServiceImpl.createRoom(roomC);
+        roomServiceImpl.createRoom(roomD);
+        roomServiceImpl.createRoom(roomE);
+
+        roomServiceImpl.createRoom(roomC);
+        roomServiceImpl.createRoom(roomD);
+        roomServiceImpl.createRoom(roomF);
     }
 
     @PostMapping("/room")
@@ -42,9 +65,10 @@ public class RoomController {
         return createdRoom.getId();
     }
 
-    @GetMapping("/room")
-    public List<Room> getAllRoom() {
-        List<Room> rooms = roomServiceImpl.findAllRooms(0, 10);
+    @GetMapping("/room/{limit}")
+    public List<Room> getAllRoom(@PathVariable("limit") int limit) {
+        log.info(String.valueOf(limit));
+        List<Room> rooms = roomServiceImpl.findAllRooms(limit);
         return rooms;
     }
 }

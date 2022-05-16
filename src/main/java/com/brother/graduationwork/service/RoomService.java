@@ -10,5 +10,5 @@ public interface RoomService {
 
     Room createRoom(RoomDTO roomDTO);
 
-    List<Room> findAllRooms(int offset, int limit);
+    List<Room> findAllRooms(int limit);
 }
