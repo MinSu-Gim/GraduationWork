@@ -1,5 +1,6 @@
 package com.brother.graduationwork.service;
 
+import com.brother.graduationwork.domain.DuplicatedStatus;
 import com.brother.graduationwork.domain.LoginStatus;
 import com.brother.graduationwork.domain.User;
 import lombok.extern.slf4j.Slf4j;
@@ -103,5 +104,27 @@ public class UserServiceImpl implements UserService {
         }
 
         return findUser;
+    }
+
+    @Override
+    public DuplicatedStatus checkDuplicatedEmail(String email) {
+        DuplicatedStatus duplicatedStatus;
+
+        try {
+            User findUser = em.createQuery("select m from User m where m.user_email = :email", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+
+            duplicatedStatus = DuplicatedStatus.Valid;
+        } catch (NoResultException e) {
+            duplicatedStatus = DuplicatedStatus.Invalid;
+        }
+
+        return duplicatedStatus;
+    }
+
+    @Override
+    public DuplicatedStatus checkDuplicatedNickname(String nickname) {
+        return null;
     }
 }

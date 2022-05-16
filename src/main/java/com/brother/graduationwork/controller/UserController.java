@@ -1,9 +1,11 @@
 package com.brother.graduationwork.controller;
 
+import com.brother.graduationwork.domain.DuplicatedStatus;
 import com.brother.graduationwork.domain.LoginStatus;
 import com.brother.graduationwork.domain.User;
 import com.brother.graduationwork.dto.UserLoginDTO;
 import com.brother.graduationwork.dto.UserLoginReturnDTO;
+import com.brother.graduationwork.dto.UserOneParamDTO;
 import com.brother.graduationwork.dto.UserSuccessDTO;
 import com.brother.graduationwork.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -135,5 +137,16 @@ public class UserController {
 
         Long updateUserId = userServiceImpl.updateUser(user);
         return updateUserId;
+    }
+
+    @PostMapping("/email")
+    public DuplicatedStatus checkDuplicatedEmail(@RequestBody UserOneParamDTO paramDTO) {
+        log.info("checkDuplicatedEmail");
+
+        String param = paramDTO.getParam();
+        log.info("param is " + param);
+
+        DuplicatedStatus duplicatedStatus = userServiceImpl.checkDuplicatedEmail(param);
+        return duplicatedStatus;
     }
 }

@@ -1,5 +1,6 @@
 package com.brother.graduationwork.service;
 
+import com.brother.graduationwork.domain.DuplicatedStatus;
 import com.brother.graduationwork.domain.LoginStatus;
 import com.brother.graduationwork.domain.User;
 
@@ -22,4 +23,8 @@ public interface UserService {
     LoginStatus loginUser(String email, String pw);
 
     User findUserByEmail(String email);
+
+    DuplicatedStatus checkDuplicatedEmail(String email);
+
+    DuplicatedStatus checkDuplicatedNickname(String nickname);
 }
