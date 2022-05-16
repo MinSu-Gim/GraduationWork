@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -98,7 +99,7 @@ public class UserServiceImpl implements UserService {
                     .setParameter("email", email)
                     .getSingleResult();
 
-        } catch (NoResultException e) {
+        } catch (NoResultException | NonUniqueResultException e) {
             log.info("동일한 Email User가 없음");
             log.info(String.valueOf(e));
         }
@@ -115,9 +116,9 @@ public class UserServiceImpl implements UserService {
                     .setParameter("email", email)
                     .getSingleResult();
 
-            duplicatedStatus = DuplicatedStatus.Valid;
+            duplicatedStatus = DuplicatedStatus.Exist;
         } catch (NoResultException e) {
-            duplicatedStatus = DuplicatedStatus.Invalid;
+            duplicatedStatus = DuplicatedStatus.NonExist;
         }
 
         return duplicatedStatus;
@@ -125,6 +126,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public DuplicatedStatus checkDuplicatedNickname(String nickname) {
-        return null;
+        DuplicatedStatus duplicatedStatus;
+
+        try {
+            User findUser = em.createQuery("select m from User m where m.user_nickname = :nickname", User.class)
+                    .setParameter("nickname", nickname)
+                    .getSingleResult();
+
+            duplicatedStatus = DuplicatedStatus.Exist;
+        } catch (NoResultException e) {
+            duplicatedStatus = DuplicatedStatus.NonExist;
+        }
+
+        return duplicatedStatus;
     }
 }

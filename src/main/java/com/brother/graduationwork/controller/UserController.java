@@ -149,4 +149,15 @@ public class UserController {
         DuplicatedStatus duplicatedStatus = userServiceImpl.checkDuplicatedEmail(param);
         return duplicatedStatus;
     }
+
+    @PostMapping("/nickname")
+    public DuplicatedStatus checkDuplicatedNickname(@RequestBody UserOneParamDTO paramDTO) {
+        log.info("checkDuplicatedNickname");
+
+        String param = paramDTO.getParam();
+        log.info("param is " + param);
+
+        DuplicatedStatus duplicatedStatus = userServiceImpl.checkDuplicatedNickname(param);
+        return duplicatedStatus;
+    }
 }
