@@ -3,6 +3,8 @@ package com.brother.graduationwork.controller;
 import com.brother.graduationwork.domain.LoginStatus;
 import com.brother.graduationwork.domain.User;
 import com.brother.graduationwork.dto.UserLoginDTO;
+import com.brother.graduationwork.dto.UserLoginReturnDTO;
+import com.brother.graduationwork.dto.UserSuccessDTO;
 import com.brother.graduationwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +27,7 @@ public class UserController {
     @Transactional
     @PostConstruct
     public void init() {
-        User userA = new User("aa@gmail.com", "pw1", "김민수", "01012345678");
+        User userA = new User("aa@naver.com", "pw1", "김민수", "01012345678");
         User userB = new User("bb@gmail.com", "pw2", "이종렬", "01023456789");
         User userC = new User("cc@gmail.com", "pw3", "나재현", "01034567890");
         User userD = new User("dd@gmail.com", "pw4", "김민수", "01026747890");
@@ -43,7 +45,22 @@ public class UserController {
         String pw = userLoginDTO.getUser_pw();
 
         LoginStatus loginStatus = userServiceImpl.loginUser(email, pw);
+        log.info(String.valueOf(loginStatus));
         return loginStatus;
+    }
+
+    @PostMapping("/loginSuccess")
+    public UserLoginReturnDTO returnUserDTO(@RequestBody UserSuccessDTO successDTO) {
+        log.info("loginSuccess POST");
+        String user_email = successDTO.getUser_email();
+
+        System.out.println("user_email = " + user_email);
+        User findUser = userServiceImpl.findUserByEmail(user_email);
+
+        UserLoginReturnDTO userLoginReturnDTO
+                = new UserLoginReturnDTO(findUser.getUser_nickname(), findUser.getMoney());
+
+        return userLoginReturnDTO;
     }
 
     /**
