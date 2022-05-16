@@ -20,4 +20,6 @@ public interface UserService {
     void increaseMoney(int totalMoney, Long userId);
 
     LoginStatus loginUser(String email, String pw);
+
+    User findUserByEmail(String email);
 }

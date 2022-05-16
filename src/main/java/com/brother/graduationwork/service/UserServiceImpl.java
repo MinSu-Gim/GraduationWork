@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
                     .setParameter("email", email)
                     .getSingleResult();
 
-            if (pw.equals(findUser.getUser_pw())){
+            if (pw.equals(findUser.getUser_pw())) {
                 loginStatus = LoginStatus.Success;
             } else {
                 loginStatus = LoginStatus.WrongPassword;
@@ -85,5 +85,23 @@ public class UserServiceImpl implements UserService {
     public void increaseMoney(int totalMoney, Long userId) {
         User userById = findUserById(userId);
         userById.setMoney(userById.getMoney() + totalMoney);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+
+        User findUser = null;
+
+        try {
+            findUser = em.createQuery("select m from User m where m.user_email = :email", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+
+        } catch (NoResultException e) {
+            log.info("동일한 Email User가 없음");
+            log.info(String.valueOf(e));
+        }
+
+        return findUser;
     }
 }
