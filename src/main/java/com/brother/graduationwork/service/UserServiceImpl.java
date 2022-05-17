@@ -84,8 +84,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void increaseMoney(int totalMoney, Long userId) {
-        User userById = findUserById(userId);
+    public void increaseMoney(int totalMoney, String user_email) {
+        User userById = findUserByEmail(user_email);
         userById.setMoney(userById.getMoney() + totalMoney);
     }
 

@@ -6,9 +6,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class KakaoPayDTO {
 
-    private final String money;
-    private final Long id;
+    private String money;
+    private String user_email;
+
+    public KakaoPayDTO() {
+    }
+
+    public KakaoPayDTO(String money, String user_email) {
+        this.money = money;
+        this.user_email = user_email;
+    }
 }

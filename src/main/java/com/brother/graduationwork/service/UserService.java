@@ -18,7 +18,7 @@ public interface UserService {
 
     Long updateUser(User updateUser);
 
-    void increaseMoney(int totalMoney, Long userId);
+    void increaseMoney(int totalMoney, String user_email);
 
     LoginStatus loginUser(String email, String pw);
 

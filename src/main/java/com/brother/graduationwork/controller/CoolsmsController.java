@@ -32,7 +32,7 @@ public class CoolsmsController {
 
         System.out.println("수신자 번호 : " + phoneNumber);
         System.out.println("인증번호 : " + randomNumber);
-        certifiedPhoneNumber(phoneNumber, randomNumber);
+        // certifiedPhoneNumber(phoneNumber, randomNumber);
         return randomNumber;
     }
 
