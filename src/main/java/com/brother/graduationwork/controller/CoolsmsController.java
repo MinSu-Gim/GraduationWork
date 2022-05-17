@@ -32,20 +32,20 @@ public class CoolsmsController {
 
         System.out.println("수신자 번호 : " + phoneNumber);
         System.out.println("인증번호 : " + randomNumber);
-        // certifiedPhoneNumber(phoneNumber, randomNumber);
+        certifiedPhoneNumber(phoneNumber, randomNumber);
         return randomNumber;
     }
 
     public void certifiedPhoneNumber(String phoneNumber, String cerNum) {
 
-        String api_key = "NCSMQWOG6MIAPFCO";
-        String api_secret = "VCLEDT5QY9N3CZJUVJFKYE5YRG3G1QXD";
+        String api_key = "NCSU7HKA2MDAFFCK";
+        String api_secret = "OCLBNOGMNTILNJV04R8DY6T7SXZPQ1XT";
         Message coolsms = new Message(api_key, api_secret);
 
         // 4 params(to, from, type, text) are mandatory. must be filled
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("to", phoneNumber);    // 수신전화번호
-        params.put("from", phoneNumber);    // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
+        params.put("from", "01047255788");    // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
         params.put("type", "SMS");
         params.put("text", "여기모여 인증번호는" + "[" + cerNum + "]" + "입니다.");
         params.put("app_version", "test app 1.2"); // application name and version
