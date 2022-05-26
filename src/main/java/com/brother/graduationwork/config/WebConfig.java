@@ -1,4 +1,4 @@
-package com.brother.graduationwork;
+package com.brother.graduationwork.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
