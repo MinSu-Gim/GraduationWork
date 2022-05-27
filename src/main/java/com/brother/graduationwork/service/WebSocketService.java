@@ -14,7 +14,7 @@ public class WebSocketService {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    public void notifyOtherUserMenus(addMenuDTO addMenuDTO) {
-        messagingTemplate.convertAndSend("/room/menu", addMenuDTO);
+    public void notifyOtherUserMenus(Long roomId, addMenuDTO addMenuDTO) {
+        messagingTemplate.convertAndSend("/room/" + roomId, addMenuDTO);
     }
 }

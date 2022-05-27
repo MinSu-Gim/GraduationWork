@@ -40,7 +40,7 @@ public class MenuController {
         if (status.equals(Status.Fail))
             return status;
         else {
-            webSocketService.notifyOtherUserMenus(addMenuDTO);
+            webSocketService.notifyOtherUserMenus(roomId, addMenuDTO);
         }
 
         return status;
