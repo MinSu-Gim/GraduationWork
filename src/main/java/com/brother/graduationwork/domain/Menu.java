@@ -1,17 +1,16 @@
 package com.brother.graduationwork.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @Embeddable
 public class Menu {
 

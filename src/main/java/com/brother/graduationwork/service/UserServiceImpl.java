@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
                     .setParameter("queryName", queryName)
                     .getSingleResult();
         } catch (NoResultException e) {
-            log.error("그런 이름의 유저가 없습니다.");
+            log.warn("그런 이름의 유저가 없습니다.");
             return null;
         }
     }
