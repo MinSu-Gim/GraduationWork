@@ -27,7 +27,7 @@ public class RoomController {
         RoomDTO roomC = new RoomDTO("족막", "만나서", "그 사이",34000, 4);
         RoomDTO roomD = new RoomDTO("니드 카페인", "반가웡", "3초",40000, 5);
         RoomDTO roomE = new RoomDTO("오오", "만반잘부", "그 짧은 시간~",50000, 6);
-        RoomDTO roomF = new RoomDTO("마지막쓰", "만반잘부", "그 짧은 시간~",50000, 6);
+        RoomDTO roomF = new RoomDTO("마지막쓰", "만반잘부", "그 짧은 시간~",50000, 2);
 
         roomServiceImpl.createRoom(roomA);
         roomServiceImpl.createRoom(roomB);
@@ -78,6 +78,16 @@ public class RoomController {
         return rooms;
     }
 
+    /**
+     * 유저가 공구 방에 입장
+     *
+     * @param joinRoomDTO
+     * @return userJoinRoomId
+     *
+     * return
+     *  0: 그런 방 혹은 유저가 없음
+     * -1: 방이 가득 참
+     */
     @PostMapping("/joinRoom")
     public Long joinRoom(@RequestBody joinRoomDTO joinRoomDTO) {
 

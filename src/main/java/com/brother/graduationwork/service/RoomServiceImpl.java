@@ -62,6 +62,9 @@ public class RoomServiceImpl implements RoomService {
             return 0L;
 
         Room room = findRoom.get();
+        if (room.getCurrNumOfPeople() == room.getMaximumPeople())
+            return -1L;
+
         room.addPerson(findUser);
         findUser.setRoom(room);
 
