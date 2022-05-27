@@ -19,7 +19,7 @@ public class WebSocketService {
         messagingTemplate.convertAndSend("/room/menu", addMenuDTO);
     }
 
-    public void notifyOtherMessage(Message message) {
-        messagingTemplate.convertAndSend("/chat/receive", message);
+    public void notifyOtherMessage(Long roomId, Message message) {
+        messagingTemplate.convertAndSend("/chat/receive/" + roomId, message);
     }
 }
