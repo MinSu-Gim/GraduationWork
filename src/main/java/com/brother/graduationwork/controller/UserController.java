@@ -35,7 +35,7 @@ public class UserController {
         User userA = new User("aa@naver.com", "pw1", "김민수", "01012345678");
         User userB = new User("bb@gmail.com", "pw2", "이종렬", "01023456789");
         User userC = new User("cc@gmail.com", "pw3", "나재현", "01034567890");
-        User userD = new User("dd@gmail.com", "pw4", "김민수", "01026747890");
+        User userD = new User("dd@gmail.com", "pw4", "민수킴", "01026747890");
 
         userServiceImpl.registerUser(userA);
         userServiceImpl.registerUser(userB);
@@ -90,12 +90,11 @@ public class UserController {
      * @return user where user's nickname == nickname
      */
     @GetMapping("/user/{nickname:[ㄱ-힣]*}")
-    public List<User> getUserByName(@PathVariable("nickname") String nickname) {
+    public User getUserByName(@PathVariable("nickname") String nickname) {
 
         log.info("UserController.getUser");
 
-        List<User> users = userServiceImpl.findUserByNickName(nickname);
-        return users;
+        return userServiceImpl.findUserByNickName(nickname);
     }
 
     /**

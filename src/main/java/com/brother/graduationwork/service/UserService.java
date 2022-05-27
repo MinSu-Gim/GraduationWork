@@ -12,7 +12,7 @@ public interface UserService {
 
     User findUserById(Long id);
 
-    List<User> findUserByNickName(String queryName);
+    User findUserByNickName(String queryName);
 
     List<User> findAllUser();
 

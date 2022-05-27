@@ -11,4 +11,6 @@ public interface RoomService {
     Room createRoom(RoomDTO roomDTO);
 
     List<Room> findAllRooms(int limit);
+
+    Long userJoinRoom(String username, String roomTitle);
 }

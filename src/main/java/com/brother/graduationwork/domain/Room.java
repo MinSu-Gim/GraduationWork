@@ -42,6 +42,7 @@ public class Room {
     public void addPerson(User user) {
         users.add(user);
         user.setRoom(this);
+        currNumOfPeople += 1;
     }
 
     @Builder
@@ -54,5 +55,20 @@ public class Room {
         this.currentAmount = 0;
         this.maximumPeople = numOfPeople;
         this.currNumOfPeople = 1;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", gatheringPlace='" + gatheringPlace + '\'' +
+                ", createdDate=" + createdDate +
+                ", createdBy='" + createdBy + '\'' +
+                ", minimumOrderAmount=" + minimumOrderAmount +
+                ", currentAmount=" + currentAmount +
+                ", maximumPeople=" + maximumPeople +
+                ", currNumOfPeople=" + currNumOfPeople +
+                '}';
     }
 }

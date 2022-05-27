@@ -1,8 +1,8 @@
 package com.brother.graduationwork.controller;
 
 import com.brother.graduationwork.domain.Room;
-import com.brother.graduationwork.domain.User;
 import com.brother.graduationwork.dto.RoomDTO;
+import com.brother.graduationwork.dto.joinRoomDTO;
 import com.brother.graduationwork.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +58,12 @@ public class RoomController {
         roomServiceImpl.createRoom(roomF);
     }
 
+    /**
+     * 방 생성
+     *
+     * @param roomDTO
+     * @return
+     */
     @PostMapping("/room")
     public Long createRoom(@RequestBody RoomDTO roomDTO) {
         Room createdRoom = roomServiceImpl.createRoom(roomDTO);
@@ -70,5 +76,17 @@ public class RoomController {
         log.info(String.valueOf(limit));
         List<Room> rooms = roomServiceImpl.findAllRooms(limit);
         return rooms;
+    }
+
+    @PostMapping("/joinRoom")
+    public Long joinRoom(@RequestBody joinRoomDTO joinRoomDTO) {
+
+        String username = joinRoomDTO.getUsername();
+        String roomTitle = joinRoomDTO.getRoomTitle();
+
+        log.info("{}님이 '{}'방에 입장했습니다", username, roomTitle);
+        Long userJoinRoomId = roomServiceImpl.userJoinRoom(username, roomTitle);
+
+        return userJoinRoomId;
     }
 }
