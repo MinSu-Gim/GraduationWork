@@ -29,7 +29,11 @@ public class MenuController {
         List<Menu> menus = addMenuDTO.getMenus();
 
         Status status = menuService.addMenusToUser(username, menus);
-        webSocketService.notifyOtherUserMenus(addMenuDTO);
+        if (status.equals(Status.Fail))
+            return status;
+        else {
+            webSocketService.notifyOtherUserMenus(addMenuDTO);
+        }
 
         return status;
     }
