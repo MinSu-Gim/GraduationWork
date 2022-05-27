@@ -2,10 +2,9 @@ package com.brother.graduationwork.controller;
 
 import com.brother.graduationwork.domain.Menu;
 import com.brother.graduationwork.domain.Status;
-import com.brother.graduationwork.domain.User;
 import com.brother.graduationwork.dto.addMenuDTO;
 import com.brother.graduationwork.service.MenuServiceImpl;
-import com.brother.graduationwork.service.UserService;
+import com.brother.graduationwork.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static java.util.Objects.isNull;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +20,7 @@ import static java.util.Objects.isNull;
 public class MenuController {
 
     private final MenuServiceImpl menuService;
+    private final WebSocketService webSocketService;
 
     @PostMapping("/menu")
     public Status addMenus(@RequestBody addMenuDTO addMenuDTO) {
@@ -31,6 +29,7 @@ public class MenuController {
         List<Menu> menus = addMenuDTO.getMenus();
 
         Status status = menuService.addMenusToUser(username, menus);
+        webSocketService.notifyOtherUserMenus(addMenuDTO);
 
         return status;
     }

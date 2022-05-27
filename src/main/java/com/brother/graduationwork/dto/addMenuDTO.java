@@ -14,8 +14,5 @@ import java.util.List;
 public class addMenuDTO {
 
     private String username;
-//    private String menuName;
-//    private int price;
-//    private int quantity;
     List<Menu> menus;
 }
