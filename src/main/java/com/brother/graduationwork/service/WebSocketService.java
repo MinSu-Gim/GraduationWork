@@ -1,5 +1,6 @@
 package com.brother.graduationwork.service;
 
+import com.brother.graduationwork.dto.Message;
 import com.brother.graduationwork.dto.addMenuDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,5 +17,9 @@ public class WebSocketService {
 
     public void notifyOtherUserMenus(addMenuDTO addMenuDTO) {
         messagingTemplate.convertAndSend("/room/menu", addMenuDTO);
+    }
+
+    public void notifyOtherMessage(Message message) {
+        messagingTemplate.convertAndSend("/chat/receive", message);
     }
 }

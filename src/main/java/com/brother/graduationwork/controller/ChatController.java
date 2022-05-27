@@ -1,9 +1,9 @@
 package com.brother.graduationwork.controller;
 
 import com.brother.graduationwork.domain.Menu;
-import com.brother.graduationwork.dto.ResponseMessage;
-import lombok.Getter;
-import lombok.ToString;
+import com.brother.graduationwork.dto.Message;
+import com.brother.graduationwork.service.WebSocketService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -15,16 +15,14 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@ToString
-public class RoomSocketController {
+@RequiredArgsConstructor
+public class ChatController {
 
-    @MessageMapping("/selectMenu")
-    @SendTo("/room/menu")
-    public String selectMenu(@Payload List<Menu> menus) {
+    private final WebSocketService webSocketService;
 
-        log.info("메뉴 선택");
-        menus.forEach(m -> System.out.println("m = " + m.toString()));
+    @MessageMapping("/send")
+    public void handleChatting(@Payload Message message) {
 
-        return "ok";
+        webSocketService.notifyOtherMessage(message);
     }
 }
