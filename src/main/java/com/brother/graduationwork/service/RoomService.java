@@ -1,6 +1,7 @@
 package com.brother.graduationwork.service;
 
 import com.brother.graduationwork.domain.Room;
+import com.brother.graduationwork.domain.Status;
 import com.brother.graduationwork.domain.User;
 import com.brother.graduationwork.dto.RoomDTO;
 
@@ -13,4 +14,6 @@ public interface RoomService {
     List<Room> findAllRooms(int limit);
 
     Long userJoinRoom(String username, String roomTitle);
+
+    Status checkRoomExistsById(Long id);
 }

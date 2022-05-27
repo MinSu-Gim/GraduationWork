@@ -1,6 +1,7 @@
 package com.brother.graduationwork.service;
 
 import com.brother.graduationwork.domain.Room;
+import com.brother.graduationwork.domain.Status;
 import com.brother.graduationwork.domain.User;
 import com.brother.graduationwork.dto.RoomDTO;
 import lombok.RequiredArgsConstructor;
@@ -87,5 +88,19 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return room;
+    }
+
+    @Override
+    public Status checkRoomExistsById(Long id) {
+
+        Status status = Status.Success;
+
+        Room findRoom = em.find(Room.class, id);
+        if (isNull(findRoom)) {
+            status = Status.Fail;
+            log.warn("그런 방이 없습니다.");
+        }
+
+        return status;
     }
 }
