@@ -3,6 +3,7 @@ package com.brother.graduationwork.controller;
 import com.brother.graduationwork.domain.Room;
 import com.brother.graduationwork.dto.RoomDTO;
 import com.brother.graduationwork.dto.joinRoomDTO;
+import com.brother.graduationwork.dto.LoadRoomsDTO;
 import com.brother.graduationwork.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -72,10 +74,24 @@ public class RoomController {
     }
 
     @GetMapping("/room/{limit}")
-    public List<Room> getAllRoom(@PathVariable("limit") int limit) {
+    public List<LoadRoomsDTO> getAllRoom(@PathVariable("limit") int limit) {
         log.info(String.valueOf(limit));
         List<Room> rooms = roomServiceImpl.findAllRooms(limit);
-        return rooms;
+
+        List<LoadRoomsDTO> loadRoomsDTOS = new ArrayList<>();
+        rooms.forEach(r -> {
+            LoadRoomsDTO loadRoomsDTO = new LoadRoomsDTO(
+                    r.getTitle(),
+                    r.getCurrNumOfPeople(),
+                    r.getMaximumPeople(),
+                    r.getCurrentAmount(),
+                    r.getMinimumOrderAmount(),
+                    r.getGatheringPlace());
+
+            loadRoomsDTOS.add(loadRoomsDTO);
+        });
+
+        return loadRoomsDTOS;
     }
 
     /**
