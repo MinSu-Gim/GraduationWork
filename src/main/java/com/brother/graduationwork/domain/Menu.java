@@ -1,33 +1,18 @@
 package com.brother.graduationwork.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.*;
 
-@Entity
-@Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Menu {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "MENU_ID")
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STORE_ID")
-    private Store store;
-
-    private String foodName;
-
+    private String menuName;
     private int price;
-
-    public Menu(String foodName, int price) {
-        this.foodName = foodName;
-        this.price = price;
-    }
-
-    public Menu() {
-    }
+    private int quantity;
 }

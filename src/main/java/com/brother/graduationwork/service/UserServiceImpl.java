@@ -53,10 +53,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUserByNickName(String queryName) {
-        return em.createQuery("select m from User m where m.user_nickname = :queryName", User.class)
-                .setParameter("queryName", queryName)
-                .getResultList();
+    public User findUserByNickName(String queryName) {
+
+        try {
+            return em.createQuery("select m from User m where m.user_nickname = :queryName", User.class)
+                    .setParameter("queryName", queryName)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            log.error("그런 이름의 유저가 없습니다.");
+            return null;
+        }
     }
 
     @Override

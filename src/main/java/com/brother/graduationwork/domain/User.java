@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "room")
 public class User {
 
     @Id
