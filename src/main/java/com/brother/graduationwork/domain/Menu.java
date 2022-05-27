@@ -5,11 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Embeddable;
+
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Embeddable
 public class Menu {
 
     private String menuName;

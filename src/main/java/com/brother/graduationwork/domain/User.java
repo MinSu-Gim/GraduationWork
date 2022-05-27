@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,6 +21,13 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROOM_ID")
     private Room room;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "MENUS",
+            joinColumns = @JoinColumn(name = "USER_ID")
+    )
+    private List<Menu> menus;
 
     private String user_email;
 
