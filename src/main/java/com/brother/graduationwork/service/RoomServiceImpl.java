@@ -1,9 +1,11 @@
 package com.brother.graduationwork.service;
 
+import com.brother.graduationwork.domain.Menu;
 import com.brother.graduationwork.domain.Room;
 import com.brother.graduationwork.domain.Status;
 import com.brother.graduationwork.domain.User;
 import com.brother.graduationwork.dto.RoomDTO;
+import com.brother.graduationwork.dto.RoomDetailDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,24 +57,72 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Long userJoinRoom(String username, String roomTitle) {
+    public RoomDetailDTO userJoinRoom(String username, String roomTitle) {
 
         Optional<Room> findRoom = findRoomByTitle(roomTitle);
         User findUser = userService.findUserByNickName(username);
 
-        if (findRoom.isEmpty() || isNull(findUser))
-            return 0L;
-
+        if (findRoom.isEmpty()) {
+            log.error("방이 존재하지 않음");
+            return null;
+        }
+            
+        if (isNull(findUser)) {
+            log.error("유저가 존재하지 않음");
+            return null;
+        }
+        
         Room room = findRoom.get();
-        if (room.getCurrNumOfPeople() == room.getMaximumPeople())
-            return -1L;
-
+        if (room.getCurrNumOfPeople() == room.getMaximumPeople()) {
+            log.error("방이 가득찼음");
+            return null;
+        }
+        
+        // 방에 사람 정보 넣기
         room.addPerson(findUser);
-        findUser.setRoom(room);
 
-        System.out.println("room.getUsers() = " + room.getUsers());
+        RoomDetailDTO roomDetailDTO = RoomDetailDTO.builder()
+                .roomId(room.getId())
+                .createdBy(room.getCreatedBy())
+                .title(room.getTitle())
+                .currNumOfPeople(room.getCurrNumOfPeople())
+                .maximumPeople(room.getMaximumPeople())
+                .currAmount(room.getCurrentAmount())
+                .minimumOrderAmount(room.getMinimumOrderAmount())
+                .gatheringPlace(room.getGatheringPlace())
+                .userMenus(new HashMap<>())
+                .build();
 
-        return room.getId();
+        List<User> users = room.getUsers();
+        log.info("방 안의 User 수: " + users.size());
+        log.info("방 안의 User 정보");
+        for (User user : users) {
+            String user_nickname = user.getUser_nickname();
+            log.info("이름: " + user_nickname);
+
+            List<Menu> userMenus = userService.getUserMenus(user_nickname);
+            log.info("메뉴: " + userMenus);
+
+            roomDetailDTO.adduserMenu(user_nickname, userMenus);
+        }
+        
+//        try {
+//            users.forEach(u -> {
+//                log.warn("반복문 현재 User: " + u);
+//                String user_nickname = u.getUser_nickname();
+//                List<Menu> userMenus = userService.getUserMenus(user_nickname);
+//
+//                log.info("방 안에 사람: " + user_nickname);
+//                log.info("그 사람의 메뉴: " + userMenus);
+//
+//                roomDetailDTO.adduserMenu(user_nickname, userMenus);
+//            });
+//        } catch (NullPointerException e) {
+//            log.warn("방 안에 사용자가 없습니다!");
+//        }
+//        log.info("방 정보!: " + roomDetailDTO);
+
+        return roomDetailDTO;
     }
 
     public Optional<Room> findRoomByTitle(String roomTitle) {

@@ -2,6 +2,7 @@ package com.brother.graduationwork.service;
 
 import com.brother.graduationwork.domain.DuplicatedStatus;
 import com.brother.graduationwork.domain.LoginStatus;
+import com.brother.graduationwork.domain.Menu;
 import com.brother.graduationwork.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 @Repository
 @Transactional
@@ -111,6 +114,18 @@ public class UserServiceImpl implements UserService {
         }
 
         return findUser;
+    }
+
+    @Override
+    public List<Menu> getUserMenus(String username) {
+
+        List<Menu> menus = null;
+
+        User findUser = findUserByNickName(username);
+        if (!isNull(findUser)) {
+            menus = findUser.getMenus();
+        }
+        return menus;
     }
 
     @Override
