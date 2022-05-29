@@ -88,32 +88,9 @@ public class RoomServiceImpl implements RoomService {
         // 방에 사람 정보 넣기
         room.addPerson(findUser);
 
-        RoomDetailDTO roomDetailDTO = RoomDetailDTO.builder()
-                .roomId(room.getId())
-                .createdBy(room.getCreatedBy())
-                .title(room.getTitle())
-                .currNumOfPeople(room.getCurrNumOfPeople())
-                .maximumPeople(room.getMaximumPeople())
-                .currAmount(room.getCurrentAmount())
-                .minimumOrderAmount(room.getMinimumOrderAmount())
-                .gatheringPlace(room.getGatheringPlace())
-                .userMenus(new HashMap<>())
-                .build();
+        RoomDetailDTO roomDetailInfo = getRoomDetailInfo(room.getId());
 
-        List<User> users = room.getUsers();
-        log.info("방 안의 User 수: " + users.size());
-        log.info("방 안의 User 정보");
-        for (User user : users) {
-            String user_nickname = user.getUser_nickname();
-            log.info("이름: " + user_nickname);
-
-            List<Menu> userMenus = userService.getUserMenus(user_nickname);
-            log.info("메뉴: " + userMenus);
-
-            roomDetailDTO.adduserMenu(user_nickname, userMenus);
-        }
-
-        return roomDetailDTO;
+        return roomDetailInfo;
     }
 
     @Override
@@ -156,5 +133,41 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return status;
+    }
+
+    @Override
+    public RoomDetailDTO getRoomDetailInfo(Long roomId) {
+
+        Room findRoom = em.find(Room.class, roomId);
+        if (isNull(findRoom)) {
+            return null;
+        }
+
+        RoomDetailDTO roomDetailDTO = RoomDetailDTO.builder()
+                .roomId(findRoom.getId())
+                .createdBy(findRoom.getCreatedBy())
+                .title(findRoom.getTitle())
+                .currNumOfPeople(findRoom.getCurrNumOfPeople())
+                .maximumPeople(findRoom.getMaximumPeople())
+                .currAmount(findRoom.getCurrentAmount())
+                .minimumOrderAmount(findRoom.getMinimumOrderAmount())
+                .gatheringPlace(findRoom.getGatheringPlace())
+                .userMenus(new HashMap<>())
+                .build();
+
+        List<User> users = findRoom.getUsers();
+        log.info("방 안의 User 수: " + users.size());
+        log.info("방 안의 User 정보");
+        for (User user : users) {
+            String user_nickname = user.getUser_nickname();
+            log.info("이름: " + user_nickname);
+
+            List<Menu> userMenus = userService.getUserMenus(user_nickname);
+            log.info("메뉴: " + userMenus);
+
+            roomDetailDTO.adduserMenu(user_nickname, userMenus);
+        }
+
+        return roomDetailDTO;
     }
 }

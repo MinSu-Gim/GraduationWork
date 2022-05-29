@@ -23,4 +23,6 @@ public interface RoomService {
     Status checkRoomExistsById(Long id);
 
     Long getUserRoomId(String username);
+
+    RoomDetailDTO getRoomDetailInfo(Long roomId);
 }
