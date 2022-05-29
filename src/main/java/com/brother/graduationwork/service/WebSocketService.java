@@ -1,5 +1,6 @@
 package com.brother.graduationwork.service;
 
+import com.brother.graduationwork.dto.ExitRoomReturnDTO;
 import com.brother.graduationwork.dto.Message;
 import com.brother.graduationwork.dto.AddMenuReturnDTO;
 import com.brother.graduationwork.dto.RoomDetailDTO;
@@ -20,8 +21,8 @@ public class WebSocketService {
         messagingTemplate.convertAndSend("/room/" + roomId, addMenuReturnDTO);
     }
 
-    public void notifyLeftUser(Long roomId, RoomDetailDTO roomDetailDTO) {
-        messagingTemplate.convertAndSend("/room/" + roomId, roomDetailDTO);
+    public void notifyLeftUser(Long roomId, ExitRoomReturnDTO exitRoomReturnDTO) {
+        messagingTemplate.convertAndSend("/room/" + roomId, exitRoomReturnDTO);
     }
 
     public void notifyOtherMessage(Long roomId, Message message) {

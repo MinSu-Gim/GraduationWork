@@ -27,6 +27,5 @@ public class RoomDetailDTO {
 
     public void adduserMenu(String username, List<Menu> userMenus) {
         this.userMenus.put(username, userMenus);
-        System.out.println("들어갔는지 확인 = " + this.userMenus.get(username));
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -53,13 +54,23 @@ public class MenuController {
         else {
 
             int after = menuService.getTotalMenusPrice(menus);
-            roomService.changeCurrAmount(roomId, beforePrice, after);
-
+            int currAmount = roomService.changeCurrAmount(roomId, beforePrice, after);
+            int roomCurrNumOfPeople = roomService.getRoomCurrNumOfPeople(roomId);
             AddMenuReturnDTO addMenuReturnDTO = AddMenuReturnDTO.builder()
                     .username(username)
-                    .menus(menus)
-                    .currAmount(after)
+                    .userMenus(new HashMap<>())
+                    .currAmount(currAmount)
+                    .currNumOfPeople(roomCurrNumOfPeople)
                     .build();
+
+            Room roomById = roomService.findRoomById(roomId);
+            List<User> users = roomById.getUsers();
+            for (User user : users) {
+                String user_nickname = user.getUser_nickname();
+                List<Menu> userMenus = userService.getUserMenus(user_nickname);
+
+                addMenuReturnDTO.adduserMenu(user_nickname, userMenus);
+            }
 
             webSocketService.notifyOtherUserMenus(roomId, addMenuReturnDTO);
         }

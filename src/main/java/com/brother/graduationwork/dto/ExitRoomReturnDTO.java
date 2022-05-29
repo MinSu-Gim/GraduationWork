@@ -1,23 +1,22 @@
 package com.brother.graduationwork.dto;
 
 import com.brother.graduationwork.domain.Menu;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
-@ToString
 @Builder
-public class AddMenuReturnDTO {
+public class ExitRoomReturnDTO {
 
-    private String username;
+    private int currNumOfPeople;
     private int currAmount;
     private Map<String, List<Menu>> userMenus;
-    private int currNumOfPeople;
 
     public void adduserMenu(String username, List<Menu> userMenus) {
         this.userMenus.put(username, userMenus);

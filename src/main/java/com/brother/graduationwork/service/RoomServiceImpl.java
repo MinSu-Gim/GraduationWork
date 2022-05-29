@@ -6,15 +6,14 @@ import com.brother.graduationwork.domain.Status;
 import com.brother.graduationwork.domain.User;
 import com.brother.graduationwork.dto.RoomDTO;
 import com.brother.graduationwork.dto.RoomDetailDTO;
+import com.brother.graduationwork.dto.ExitRoomReturnDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.List;
@@ -91,6 +90,21 @@ public class RoomServiceImpl implements RoomService {
 
         RoomDetailDTO roomDetailInfo = getRoomDetailInfo(room.getId());
 
+        ExitRoomReturnDTO exitRoomReturnDTO = ExitRoomReturnDTO.builder()
+                .currNumOfPeople(room.getCurrNumOfPeople())
+                .currAmount(room.getCurrentAmount())
+                .userMenus(new HashMap<>())
+                .build();
+
+        List<User> users = room.getUsers();
+        for (User user : users) {
+            String user_nickname = user.getUser_nickname();
+            List<Menu> userMenus = userService.getUserMenus(user_nickname);
+            exitRoomReturnDTO.adduserMenu(user_nickname, userMenus);
+        }
+
+        webSocketService.notifyLeftUser(room.getId(), exitRoomReturnDTO);
+
         return roomDetailInfo;
     }
 
@@ -105,8 +119,20 @@ public class RoomServiceImpl implements RoomService {
             room.deletePerson(findUser);
             room.setCurrentAmount(room.getCurrentAmount() - price);
 
-            RoomDetailDTO roomDetailInfo = getRoomDetailInfo(roomId);
-            webSocketService.notifyLeftUser(roomId, roomDetailInfo);
+            ExitRoomReturnDTO exitRoomReturnDTO = ExitRoomReturnDTO.builder()
+                    .currNumOfPeople(room.getCurrNumOfPeople())
+                    .currAmount(room.getCurrentAmount())
+                    .userMenus(new HashMap<>())
+                    .build();
+
+            List<User> users = room.getUsers();
+            for (User user : users) {
+                String user_nickname = user.getUser_nickname();
+                List<Menu> userMenus = userService.getUserMenus(user_nickname);
+                exitRoomReturnDTO.adduserMenu(user_nickname, userMenus);
+            }
+
+            webSocketService.notifyLeftUser(roomId, exitRoomReturnDTO);
         }
     }
 
@@ -139,11 +165,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void changeCurrAmount(Long roomId, int before, int after) {
+    public int changeCurrAmount(Long roomId, int before, int after) {
         Room findRoom = em.find(Room.class, roomId);
 
         findRoom.setCurrentAmount(findRoom.getCurrentAmount() - before);
         findRoom.setCurrentAmount(findRoom.getCurrentAmount() + after);
+
+        return findRoom.getCurrentAmount();
     }
 
     @Override
@@ -194,5 +222,17 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return roomDetailDTO;
+    }
+
+    @Override
+    public int getRoomCurrNumOfPeople(Long roomId) {
+        Room findRoom = em.find(Room.class, roomId);
+        return findRoom.getCurrNumOfPeople();
+    }
+
+    @Override
+    public Room findRoomById(Long roomId) {
+        Room findRoom = em.find(Room.class, roomId);
+        return findRoom;
     }
 }
