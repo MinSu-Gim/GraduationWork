@@ -45,6 +45,16 @@ public class Room {
         currNumOfPeople += 1;
     }
 
+    public void deletePerson(User user) {
+        users.remove(user);
+        user.setRoom(null);
+        currNumOfPeople -= 1;
+
+        for (User user1 : users) {
+            System.out.println("user.getUser_nickname() = " + user1.getUser_nickname());
+        }
+    }
+
     @Builder
     public Room(String title, String gatheringPlace, String createdBy, int minimumOrderAmount, int numOfPeople) {
         this.title = title;

@@ -93,6 +93,13 @@ public class RoomServiceImpl implements RoomService {
         return roomDetailInfo;
     }
 
+    public void exitRoom(String username) {
+        User findUser = userService.findUserByNickName(username);
+        Room room = findUser.getRoom();
+        if (!isNull(room))
+            room.deletePerson(findUser);
+    }
+
     @Override
     public Optional<Room> findRoomByTitle(String roomTitle) {
 

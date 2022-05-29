@@ -18,6 +18,8 @@ public interface RoomService {
 
     Object userJoinRoom(String username, String roomTitle);
 
+    void exitRoom(String username);
+
     Optional<Room> findRoomByTitle(String roomTitle);
 
     Status checkRoomExistsById(Long id);

@@ -5,16 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class UserOneParamDTO {
 
     private String param;
-
-    public UserOneParamDTO(String param) {
-        this.param = param;
-    }
-
-    public UserOneParamDTO() {
-    }
 }

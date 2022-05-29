@@ -41,8 +41,11 @@ public class MenuServiceImpl {
     }
 
     public void deleteUserMenus(String username) {
-
         User findUser = userService.findUserByNickName(username);
-        findUser.getMenus().clear();
+        if (isNull(findUser)) {
+            log.warn("찾는 유저 X in deleteUserMenus");
+        } else {
+            findUser.getMenus().clear();
+        }
     }
 }

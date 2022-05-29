@@ -1,10 +1,8 @@
 package com.brother.graduationwork.controller;
 
 import com.brother.graduationwork.domain.Room;
-import com.brother.graduationwork.dto.RoomDTO;
-import com.brother.graduationwork.dto.RoomDetailDTO;
-import com.brother.graduationwork.dto.joinRoomDTO;
-import com.brother.graduationwork.dto.LoadRoomsDTO;
+import com.brother.graduationwork.dto.*;
+import com.brother.graduationwork.service.MenuServiceImpl;
 import com.brother.graduationwork.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoomController {
 
-    private final RoomService roomServiceImpl;
+    private final RoomService roomService;
+    private final MenuServiceImpl menuService;
 
     @Transactional
     @PostConstruct
@@ -32,12 +31,12 @@ public class RoomController {
         RoomDTO roomE = new RoomDTO("오오", "만반잘부", "그 짧은 시간~",50000, 10);
         RoomDTO roomF = new RoomDTO("마지막쓰", "만반잘부", "그 짧은 시간~",50000, 10);
 
-        roomServiceImpl.createRoom(roomA);
-        roomServiceImpl.createRoom(roomB);
-        roomServiceImpl.createRoom(roomC);
-        roomServiceImpl.createRoom(roomD);
-        roomServiceImpl.createRoom(roomE);
-        roomServiceImpl.createRoom(roomF);
+        roomService.createRoom(roomA);
+        roomService.createRoom(roomB);
+        roomService.createRoom(roomC);
+        roomService.createRoom(roomD);
+        roomService.createRoom(roomE);
+        roomService.createRoom(roomF);
     }
 
     /**
@@ -48,7 +47,7 @@ public class RoomController {
      */
     @PostMapping("/room")
     public Long createRoom(@RequestBody RoomDTO roomDTO) {
-        Room createdRoom = roomServiceImpl.createRoom(roomDTO);
+        Room createdRoom = roomService.createRoom(roomDTO);
 
         return createdRoom.getId();
     }
@@ -56,7 +55,7 @@ public class RoomController {
     @GetMapping("/room/{limit}")
     public List<LoadRoomsDTO> getAllRoom(@PathVariable("limit") int limit) {
         log.info(String.valueOf(limit));
-        List<Room> rooms = roomServiceImpl.findAllRooms(limit);
+        List<Room> rooms = roomService.findAllRooms(limit);
 
         List<LoadRoomsDTO> loadRoomsDTOS = new ArrayList<>();
         rooms.forEach(r -> {
@@ -92,6 +91,14 @@ public class RoomController {
         String username = joinRoomDTO.getUsername();
         String roomTitle = joinRoomDTO.getRoomTitle();
 
-        return roomServiceImpl.userJoinRoom(username, roomTitle);
+        return roomService.userJoinRoom(username, roomTitle);
+    }
+
+    @PostMapping("/room/exit")
+    public void exitRoom(@RequestBody UserOneParamDTO param) {
+
+        String username = param.getParam();
+        menuService.deleteUserMenus(username);
+        roomService.exitRoom(username);
     }
 }
