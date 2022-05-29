@@ -24,12 +24,12 @@ public class RoomController {
     @Transactional
     @PostConstruct
     public void init() {
-        RoomDTO roomA = new RoomDTO("치킨", "안뇽", "붉은색", 10000, 1000);
-        RoomDTO roomB = new RoomDTO("만다린", "친구들", "푸른색",22500, 10);
-        RoomDTO roomC = new RoomDTO("족막", "만나서", "그 사이",34000, 10);
-        RoomDTO roomD = new RoomDTO("니드 카페인", "반가웡", "3초",40000, 10);
-        RoomDTO roomE = new RoomDTO("오오", "만반잘부", "그 짧은 시간~",50000, 10);
-        RoomDTO roomF = new RoomDTO("마지막쓰", "만반잘부", "그 짧은 시간~",50000, 10);
+        RoomDTO roomA = new RoomDTO("맘터 같이 먹자", "이종렬", "디지털관", 10000, 1000);
+        RoomDTO roomB = new RoomDTO("공차", "민수킴", "블랙홀 앞",22500, 10);
+        RoomDTO roomC = new RoomDTO("족막", "나재현", "글로벌관",34000, 10);
+        RoomDTO roomD = new RoomDTO("아이 니드 카페인", "김민수", "디지털관",15000, 5);
+        RoomDTO roomE = new RoomDTO("오오", "펭귄", "테크노관",50000, 10);
+        RoomDTO roomF = new RoomDTO("마지막쓰", "몬스터", "그 짧은 시간~",50000, 10);
 
         roomService.createRoom(roomA);
         roomService.createRoom(roomB);
