@@ -16,8 +16,8 @@ import java.io.IOException;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private myPathResourceResolver myPathResourceResolver;
+//    @Autowired
+//    private myPathResourceResolver myPathResourceResolver;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -26,24 +26,24 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST");
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/")
-                .resourceChain(true)
-                .addResolver(myPathResourceResolver);
-    }
-
-    @Component
-    static
-    class myPathResourceResolver extends PathResourceResolver {
-
-        @Override
-        protected Resource getResource(String resourcePath, Resource location) throws IOException {
-            Resource requestedResource = location.createRelative(resourcePath);
-            return requestedResource.exists() && requestedResource.isReadable() ? requestedResource
-                    : new ClassPathResource("/static/index.html");
-        }
-    }
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//
+//        registry.addResourceHandler("/**")
+//                .addResourceLocations("classpath:/static/")
+//                .resourceChain(true)
+//                .addResolver(myPathResourceResolver);
+//    }
+//
+//    @Component
+//    static
+//    class myPathResourceResolver extends PathResourceResolver {
+//
+//        @Override
+//        protected Resource getResource(String resourcePath, Resource location) throws IOException {
+//            Resource requestedResource = location.createRelative(resourcePath);
+//            return requestedResource.exists() && requestedResource.isReadable() ? requestedResource
+//                    : new ClassPathResource("/static/index.html");
+//        }
+//    }
 }
