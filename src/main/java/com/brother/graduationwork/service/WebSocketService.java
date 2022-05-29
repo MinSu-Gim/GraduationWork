@@ -2,6 +2,7 @@ package com.brother.graduationwork.service;
 
 import com.brother.graduationwork.dto.Message;
 import com.brother.graduationwork.dto.AddMenuReturnDTO;
+import com.brother.graduationwork.dto.RoomDetailDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -17,6 +18,10 @@ public class WebSocketService {
 
     public void notifyOtherUserMenus(Long roomId, AddMenuReturnDTO addMenuReturnDTO) {
         messagingTemplate.convertAndSend("/room/" + roomId, addMenuReturnDTO);
+    }
+
+    public void notifyLeftUser(Long roomId, RoomDetailDTO roomDetailDTO) {
+        messagingTemplate.convertAndSend("/room/" + roomId, roomDetailDTO);
     }
 
     public void notifyOtherMessage(Long roomId, Message message) {

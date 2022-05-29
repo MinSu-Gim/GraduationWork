@@ -40,13 +40,21 @@ public class MenuServiceImpl {
         return status;
     }
 
-    public void deleteUserMenus(String username) {
+    public int deleteUserMenus(String username) {
+
+        int totalMenusPrice = 0;
+
         User findUser = userService.findUserByNickName(username);
         if (isNull(findUser)) {
             log.warn("찾는 유저 X in deleteUserMenus");
         } else {
-            findUser.getMenus().clear();
+            List<Menu> findUserMenus = findUser.getMenus();
+
+            totalMenusPrice = getTotalMenusPrice(findUserMenus);
+            findUserMenus.clear();
         }
+
+        return totalMenusPrice;
     }
 
     public int getTotalMenusPrice(List<Menu> menus) {

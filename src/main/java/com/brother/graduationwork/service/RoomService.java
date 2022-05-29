@@ -18,7 +18,7 @@ public interface RoomService {
 
     Object userJoinRoom(String username, String roomTitle);
 
-    void exitRoom(String username);
+    void exitRoom(String username, int price);
 
     Optional<Room> findRoomByTitle(String roomTitle);
 
@@ -26,7 +26,7 @@ public interface RoomService {
 
     Long getUserRoomId(String username);
 
-    void changeCurrAmount(Long roomId, int amount);
+    void changeCurrAmount(Long roomId, int before, int after);
 
     RoomDetailDTO getRoomDetailInfo(Long roomId);
 }

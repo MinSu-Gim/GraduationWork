@@ -32,6 +32,7 @@ public class RoomServiceImpl implements RoomService {
     EntityManager em;
     
     private final UserService userService;
+    private final WebSocketService webSocketService;
     
     @Override
     public Room createRoom(RoomDTO roomDTO) {
@@ -93,11 +94,20 @@ public class RoomServiceImpl implements RoomService {
         return roomDetailInfo;
     }
 
-    public void exitRoom(String username) {
+    public void exitRoom(String username, int price) {
         User findUser = userService.findUserByNickName(username);
         Room room = findUser.getRoom();
-        if (!isNull(room))
+        if (!isNull(room)) {
+
+            Long roomId = room.getId();
+
+            findUser.setJoinRoom(false);
             room.deletePerson(findUser);
+            room.setCurrentAmount(room.getCurrentAmount() - price);
+
+            RoomDetailDTO roomDetailInfo = getRoomDetailInfo(roomId);
+            webSocketService.notifyLeftUser(roomId, roomDetailInfo);
+        }
     }
 
     @Override
@@ -129,9 +139,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void changeCurrAmount(Long roomId, int amount) {
+    public void changeCurrAmount(Long roomId, int before, int after) {
         Room findRoom = em.find(Room.class, roomId);
-        findRoom.setCurrentAmount(amount);
+
+        findRoom.setCurrentAmount(findRoom.getCurrentAmount() - before);
+        findRoom.setCurrentAmount(findRoom.getCurrentAmount() + after);
     }
 
     @Override

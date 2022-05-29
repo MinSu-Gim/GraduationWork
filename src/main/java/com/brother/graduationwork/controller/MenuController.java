@@ -3,10 +3,12 @@ package com.brother.graduationwork.controller;
 import com.brother.graduationwork.domain.Menu;
 import com.brother.graduationwork.domain.Room;
 import com.brother.graduationwork.domain.Status;
+import com.brother.graduationwork.domain.User;
 import com.brother.graduationwork.dto.addMenuDTO;
 import com.brother.graduationwork.dto.AddMenuReturnDTO;
 import com.brother.graduationwork.service.MenuServiceImpl;
 import com.brother.graduationwork.service.RoomService;
+import com.brother.graduationwork.service.UserService;
 import com.brother.graduationwork.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class MenuController {
     private final RoomService roomService;
     private final MenuServiceImpl menuService;
     private final WebSocketService webSocketService;
+    private final UserService userService;
 
     @PostMapping("/menu")
     public Status addMenus(@RequestBody addMenuDTO addMenuDTO) {
@@ -40,19 +43,22 @@ public class MenuController {
         if (status.equals(Status.Fail))
             return status;
 
+        User findUser = userService.findUserByNickName(username);
+        int beforePrice = findUser.getTotalPriceOfMenus();
+
         menuService.deleteUserMenus(username);
         status = menuService.addMenusToUser(username, menus);
         if (status.equals(Status.Fail))
             return status;
         else {
 
-            int totalMenusPrice = menuService.getTotalMenusPrice(menus);
-            roomService.changeCurrAmount(roomId, totalMenusPrice);
+            int after = menuService.getTotalMenusPrice(menus);
+            roomService.changeCurrAmount(roomId, beforePrice, after);
 
             AddMenuReturnDTO addMenuReturnDTO = AddMenuReturnDTO.builder()
                     .username(username)
                     .menus(menus)
-                    .currAmount(totalMenusPrice)
+                    .currAmount(after)
                     .build();
 
             webSocketService.notifyOtherUserMenus(roomId, addMenuReturnDTO);

@@ -41,6 +41,14 @@ public class User {
 
     private int money;
 
+    public int getTotalPriceOfMenus() {
+        int totalPrice = 0;
+        for (Menu menu : this.menus) {
+            totalPrice += menu.getPrice() * menu.getQuantity();
+        }
+
+        return totalPrice;
+    }
     public User(String user_email, String user_pw, String nickname, String phoneNumber) {
         this.user_email = user_email;
         this.user_pw = user_pw;

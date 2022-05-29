@@ -98,7 +98,8 @@ public class RoomController {
     public void exitRoom(@RequestBody UserOneParamDTO param) {
 
         String username = param.getParam();
-        menuService.deleteUserMenus(username);
-        roomService.exitRoom(username);
+        int price = menuService.deleteUserMenus(username);
+
+        roomService.exitRoom(username, price);
     }
 }
