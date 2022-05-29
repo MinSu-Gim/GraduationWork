@@ -145,7 +145,11 @@ public class RoomServiceImpl implements RoomService {
     public Long getUserRoomId(String username) {
 
         User findUser = userService.findUserByNickName(username);
-        return findUser.getRoom().getId();
+        Room RoomOfFindUser = findUser.getRoom();
+        if (isNull(RoomOfFindUser))
+            return -1L;
+
+        return RoomOfFindUser.getId();
     }
 
     @Override

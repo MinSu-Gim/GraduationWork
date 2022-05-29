@@ -32,6 +32,8 @@ public class MenuController {
         List<Menu> menus = addMenuDTO.getMenus();
 
         Long roomId = roomService.getUserRoomId(username);
+        if (roomId == -1)
+            return Status.Fail;
 
         Status status = roomService.checkRoomExistsById(roomId);
         if (status.equals(Status.Fail))
