@@ -37,6 +37,7 @@ public class MenuController {
         if (status.equals(Status.Fail))
             return status;
 
+        menuService.deleteUserMenus(username);
         status = menuService.addMenusToUser(username, menus);
         if (status.equals(Status.Fail))
             return status;
