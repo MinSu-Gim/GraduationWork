@@ -17,4 +17,6 @@ public interface RoomService {
     RoomDetailDTO userJoinRoom(String username, String roomTitle);
 
     Status checkRoomExistsById(Long id);
+
+    Long getUserRoomId(String username);
 }

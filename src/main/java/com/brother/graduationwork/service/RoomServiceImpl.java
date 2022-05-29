@@ -142,6 +142,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public Long getUserRoomId(String username) {
+
+        User findUser = userService.findUserByNickName(username);
+        return findUser.getRoom().getId();
+    }
+
+    @Override
     public Status checkRoomExistsById(Long id) {
 
         Status status = Status.Success;

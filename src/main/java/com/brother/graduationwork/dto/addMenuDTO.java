@@ -13,7 +13,6 @@ import java.util.List;
 @ToString
 public class addMenuDTO {
 
-    private Long roomId;
     private String username;
     List<Menu> menus;
 }
