@@ -129,6 +129,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public void changeCurrAmount(Long roomId, int amount) {
+        Room findRoom = em.find(Room.class, roomId);
+        findRoom.setCurrentAmount(amount);
+    }
+
+    @Override
     public Status checkRoomExistsById(Long id) {
 
         Status status = Status.Success;

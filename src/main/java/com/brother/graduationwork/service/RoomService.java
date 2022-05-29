@@ -26,5 +26,7 @@ public interface RoomService {
 
     Long getUserRoomId(String username);
 
+    void changeCurrAmount(Long roomId, int amount);
+
     RoomDetailDTO getRoomDetailInfo(Long roomId);
 }

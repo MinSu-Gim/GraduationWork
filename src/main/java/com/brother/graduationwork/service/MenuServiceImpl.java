@@ -48,4 +48,14 @@ public class MenuServiceImpl {
             findUser.getMenus().clear();
         }
     }
+
+    public int getTotalMenusPrice(List<Menu> menus) {
+
+        int totalPrice = 0;
+        for (Menu menu : menus) {
+            totalPrice += menu.getPrice() * menu.getQuantity();
+        }
+
+        return totalPrice;
+    }
 }
