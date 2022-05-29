@@ -57,6 +57,23 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public boolean checkIfUserConnectAnyRoom(String username) {
+
+        boolean check = false;
+
+        User findUser = userService.findUserByNickName(username);
+        if (isNull(findUser))
+            check = true;
+
+        boolean isUserJoinRoom = findUser.isJoinRoom();
+        if (isUserJoinRoom) {
+            check = true;
+        }
+
+        return check;
+    }
+
+    @Override
     public RoomDetailDTO userJoinRoom(String username, String roomTitle) {
 
         Optional<Room> findRoom = findRoomByTitle(roomTitle);
@@ -76,6 +93,8 @@ public class RoomServiceImpl implements RoomService {
         if (room.getCurrNumOfPeople() == room.getMaximumPeople()) {
             log.error("방이 가득찼음");
             return null;
+        } else {
+            findUser.setJoinRoom(true);
         }
         
         // 방에 사람 정보 넣기
@@ -105,26 +124,11 @@ public class RoomServiceImpl implements RoomService {
 
             roomDetailDTO.adduserMenu(user_nickname, userMenus);
         }
-        
-//        try {
-//            users.forEach(u -> {
-//                log.warn("반복문 현재 User: " + u);
-//                String user_nickname = u.getUser_nickname();
-//                List<Menu> userMenus = userService.getUserMenus(user_nickname);
-//
-//                log.info("방 안에 사람: " + user_nickname);
-//                log.info("그 사람의 메뉴: " + userMenus);
-//
-//                roomDetailDTO.adduserMenu(user_nickname, userMenus);
-//            });
-//        } catch (NullPointerException e) {
-//            log.warn("방 안에 사용자가 없습니다!");
-//        }
-//        log.info("방 정보!: " + roomDetailDTO);
 
         return roomDetailDTO;
     }
 
+    @Override
     public Optional<Room> findRoomByTitle(String roomTitle) {
 
         Optional<Room> room = Optional.empty();

@@ -22,6 +22,8 @@ public class User {
     @JoinColumn(name = "ROOM_ID")
     private Room room;
 
+    private boolean joinRoom;
+
     @ElementCollection
     @CollectionTable(
             name = "MENUS",
@@ -45,9 +47,14 @@ public class User {
         this.user_nickname = nickname;
         this.user_phoneNumber = phoneNumber;
         this.money = 0;
+        this.joinRoom = false;
     }
 
     public User() {
 
+    }
+
+    public boolean isJoinRoom() {
+        return joinRoom;
     }
 }

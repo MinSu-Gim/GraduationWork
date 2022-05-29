@@ -90,8 +90,16 @@ public class RoomController {
         String username = joinRoomDTO.getUsername();
         String roomTitle = joinRoomDTO.getRoomTitle();
 
-        log.info("{}님이 '{}'방에 입장했습니다", username, roomTitle);
-        RoomDetailDTO roomDetailDTO = roomServiceImpl.userJoinRoom(username, roomTitle);
+        RoomDetailDTO roomDetailDTO = null;
+
+        boolean check = roomServiceImpl.checkIfUserConnectAnyRoom(username);
+        if (check)
+        {
+            log.warn("'{}'유저가 현재 방에 접속해있습니다.", username);
+        } else {
+            log.info("{}님이 '{}'방에 입장했습니다", username, roomTitle);
+            roomDetailDTO = roomServiceImpl.userJoinRoom(username, roomTitle);
+        }
 
         return roomDetailDTO;
     }
