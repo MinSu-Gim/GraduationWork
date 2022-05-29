@@ -57,46 +57,34 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean checkIfUserConnectAnyRoom(String username) {
-
-        boolean check = false;
-
-        User findUser = userService.findUserByNickName(username);
-        if (isNull(findUser))
-            check = true;
-
-        boolean isUserJoinRoom = findUser.isJoinRoom();
-        if (isUserJoinRoom) {
-            check = true;
-        }
-
-        return check;
-    }
-
-    @Override
-    public RoomDetailDTO userJoinRoom(String username, String roomTitle) {
+    public Object userJoinRoom(String username, String roomTitle) {
 
         Optional<Room> findRoom = findRoomByTitle(roomTitle);
         User findUser = userService.findUserByNickName(username);
 
         if (findRoom.isEmpty()) {
             log.error("방이 존재하지 않음");
-            return null;
+            return -1;
         }
             
         if (isNull(findUser)) {
             log.error("유저가 존재하지 않음");
-            return null;
+            return -2;
         }
         
         Room room = findRoom.get();
         if (room.getCurrNumOfPeople() == room.getMaximumPeople()) {
             log.error("방이 가득찼음");
-            return null;
+            return -3;
+        }
+
+        boolean isUserJoinRoom = findUser.isJoinRoom();
+        if (isUserJoinRoom) {
+            return -4;
         } else {
             findUser.setJoinRoom(true);
         }
-        
+
         // 방에 사람 정보 넣기
         room.addPerson(findUser);
 

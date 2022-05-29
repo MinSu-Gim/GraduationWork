@@ -81,26 +81,17 @@ public class RoomController {
      * @return userJoinRoomId
      *
      * return
-     *  0: 그런 방 혹은 유저가 없음
-     * -1: 방이 가득 참
+     * -1: 그런 방이 없음
+     * -2: 그런 유저가 없음
+     * -3: 방이 가득 참
+     * -4: 현재 사용자가 접속한 방이 있음
      */
     @PostMapping("/joinRoom")
-    public RoomDetailDTO joinRoom(@RequestBody joinRoomDTO joinRoomDTO) {
+    public Object joinRoom(@RequestBody joinRoomDTO joinRoomDTO) {
 
         String username = joinRoomDTO.getUsername();
         String roomTitle = joinRoomDTO.getRoomTitle();
 
-        RoomDetailDTO roomDetailDTO = null;
-
-        boolean check = roomServiceImpl.checkIfUserConnectAnyRoom(username);
-        if (check)
-        {
-            log.warn("'{}'유저가 현재 방에 접속해있습니다.", username);
-        } else {
-            log.info("{}님이 '{}'방에 입장했습니다", username, roomTitle);
-            roomDetailDTO = roomServiceImpl.userJoinRoom(username, roomTitle);
-        }
-
-        return roomDetailDTO;
+        return roomServiceImpl.userJoinRoom(username, roomTitle);
     }
 }

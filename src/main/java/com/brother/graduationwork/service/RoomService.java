@@ -6,6 +6,7 @@ import com.brother.graduationwork.domain.User;
 import com.brother.graduationwork.dto.RoomDTO;
 import com.brother.graduationwork.dto.RoomDetailDTO;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,9 +16,7 @@ public interface RoomService {
 
     List<Room> findAllRooms(int limit);
 
-    boolean checkIfUserConnectAnyRoom(String username);
-
-    RoomDetailDTO userJoinRoom(String username, String roomTitle);
+    Object userJoinRoom(String username, String roomTitle);
 
     Optional<Room> findRoomByTitle(String roomTitle);
 
